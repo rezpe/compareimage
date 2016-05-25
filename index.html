@@ -2,164 +2,144 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <title>SVG Compare</title>
+  <meta charset="utf-8">
+  <title>SVG Compare</title>
 </head>
 
 <style media="screen">
-    .comparison {
-        border: solid black 1px;
-    }
+  .comparison {
+    border: solid black 1px;
+  }
 
-    svg {
-        border: solid black 1px;
-    }
+  svg {
+    border: solid black 1px;
+  }
 </style>
 
 <body>
-    <div id="c1" class="comparison">
-        <span>Expected Score: 1</span>
-        <span id=result></span>
-        <svg></svg>
-        <svg></svg>
-    </div>
+  <div id="c1" class="comparison">
+    <span>Expected Score: 0</span>
+    <span id=result></span>
+    <svg></svg>
+    <svg></svg>
+  </div>
 
-    <div id="c2" class="comparison">
-        <span>Expected Score: 0</span>
-        <span id=result></span>
-        <svg>
-            <rect x=20 y=20 width=50 height=50></rect>
-        </svg>
-        <svg></svg>
-    </div>
+  <div id="c2" class="comparison">
+    <span>Expected Score: 1</span>
+    <span id=result></span>
+    <svg>
+      <rect x=20 y=20 width=50 height=50></rect>
+    </svg>
+    <svg></svg>
+  </div>
 
-    <div id="c3" class="comparison">
-        <span>Expected Score: 0</span>
-        <span id=result></span>
-        <svg> </svg>
-        <svg>
-            <rect x=20 y=20 width=50 height=50></rect>
-        </svg>
-    </div>
+  <div id="c3" class="comparison">
+    <span>Expected Score: 1</span>
+    <span id=result></span>
+    <svg> </svg>
+    <svg>
+      <rect x=20 y=20 width=50 height=50></rect>
+    </svg>
+  </div>
 
-    <div id="c4" class="comparison">
-        <span>Expected Score: 1</span>
-        <span id=result></span>
-        <svg>
-            <rect x=20 y=20 width=50 height=50></rect>
-        </svg>
-        <svg>
-            <rect x=20 y=20 width=50 height=50></rect>
-        </svg>
-    </div>
+  <div id="c4" class="comparison">
+    <span>Expected Score: 0</span>
+    <span id=result></span>
+    <svg>
+      <rect x=20 y=20 width=50 height=50></rect>
+    </svg>
+    <svg>
+      <rect x=20 y=20 width=50 height=50></rect>
+    </svg>
+  </div>
 
-    <div id="c5" class="comparison">
-        <span>Expected Score: 0.5</span>
-        <span id=result></span>
-        <svg>
-            <rect x=20 y=20 width=50 height=50></rect>
-            <rect x=90 y=20 width=50 height=50></rect>
-        </svg>
-        <svg>
-            <rect x=20 y=20 width=50 height=50></rect>
-        </svg>
-    </div>
+  <div id="c5" class="comparison">
+    <span>Expected Score: 0.5</span>
+    <span id=result></span>
+    <svg>
+      <rect x=20 y=20 width=50 height=50></rect>
+      <rect x=90 y=20 width=50 height=50></rect>
+    </svg>
+    <svg>
+      <rect x=20 y=20 width=50 height=50></rect>
+    </svg>
+  </div>
 
-    <div id="c6" class="comparison">
-        <span>Expected Score: 0.42</span>
-        <span id=result></span>
-        <svg>
-            <rect x=20 y=20 width=40 height=40></rect>
-            <rect x=40 y=40 width=40 height=40></rect>
-        </svg>
-        <svg>
-            <rect x=20 y=20 width=40 height=40></rect>
-        </svg>
-    </div>
+  <div id="c6" class="comparison">
+    <span>Expected Score: 0.42</span>
+    <span id=result></span>
+    <svg>
+      <rect x=20 y=20 width=40 height=40></rect>
+      <rect x=40 y=40 width=40 height=40></rect>
+    </svg>
+    <svg>
+      <rect x=20 y=20 width=40 height=40></rect>
+    </svg>
+  </div>
 
-    <script type="text/javascript">
-        //Svg Comparison
-        function compare(svga, svgb, width1, height1, width2, height2, elem, i) {
-            var a = createCanvas(svga);
-            var b = createCanvas(svgb);
-            var data1 = [];
-            var data2 = [];
-            var res;
-            if(width1 === 0  && width2 === 0) return 1;
-            if(width1 === 0 || width2 === 0) return 0;
-            if(width1 > 0  && height1 > 0 && width2 > 0 && height2 > 0){
-                var width = Math.max(width1, width2);
-                var height = Math.max(height1, height2);
-                 
-                setTimeout(function(){
-                    data1 = a.getContext('2d').getImageData(20,20, width, height).data;
-                    data2 = b.getContext('2d').getImageData(20,20, width, height).data;
-                    res = rmsDiff(data1, data2);
-                    console.log(res);
-                    
-                    //elem.querySelectorAll("span")[0].innerHTML = "Expected Score: " + expected[i];
-                    elem.querySelectorAll("span")[1].innerHTML = "Calculated Score: " + res;
-                    elem.style.backgroundColor = res == expected[i] ? "green" : "red";
-                    
-                    return res;
-                }, 1000);               
-            }            
-        }
-        
-        function createCanvas(svgtext, width, height){
-            var canvas = document.createElement('canvas');
-            var ctx = canvas.getContext('2d');
+  <script type="text/javascript">
+    //Svg Comparison
+    function compare(svga, svgb, width, height) {
+      var a = createCanvas(svga);
+      var b = createCanvas(svgb);
+      var data1 = [];
+      var data2 = [];
+      var res;
+      if (width === 0) return 0;
+      if (width > 0 && height > 0) {
+        data1 = a.getContext('2d').getImageData(20, 20, width, height).data;
+        data2 = b.getContext('2d').getImageData(20, 20, width, height).data;
+        res = rmsDiff(data1, data2);
+        return res;
+      }
+    }
 
-            var data = svgtext.replace(/svg/, "svg xmlns='http://www.w3.org/2000/svg' ") 
+    function createCanvas(svgtext, width, height) {
+      var canvas = document.createElement('canvas');
+      var ctx = canvas.getContext('2d');
+      var data = svgtext.replace(/svg/, "svg xmlns='http://www.w3.org/2000/svg' ")
+      var img = new Image();
+      var mySrc = 'data:image/svg+xml;utf8,' + data;
+      img.src = mySrc;
+      ctx.drawImage(img, 0, 0);
+      return canvas;
+    }
 
-            var DOMURL = window.URL || window.webkitURL || window;
+    function rmsDiff(data1, data2) {
+      var squares = 0;
+      var count1 = 0;
+      var count2 = 0;
+      for (var i = 0; i < data1.length; i++) {
+        squares += ((data1[i] - data2[i]) !== 0);
+        if (data1[i] !== 0) count1++;
+        if (data2[i] !== 0) count2++;
+      }
 
-            var img = new Image();
-            var svg = new Blob([data], {type: 'image/svg+xml;charset=utf-8'});
-            var url = DOMURL.createObjectURL(svg);
-            
-            var mySrc = 'data:image/svg+xml;base64,'+window.btoa(data);
-            
-            img.src = url;
-            img.onload = function () {
-              ctx.drawImage(img, 0, 0);           
-           }
-          
-            return canvas;
-        }
-        
-        function rmsDiff(data1,data2){
-            var squares = 0;
-            var count1 = 0;
-            var count2 = 0;
-            for(var i = 0; i<data1.length; i++){
-                squares += ((data1[i]-data2[i]) !== 0);
-                if(data1[i] !== 0)count1++;
-                if(data2[i] !== 0)count2++;
-            }
-            var rms = squares/Math.max(count1, count2);
-            return rms.toFixed(11);
-        }
+      if (Math.max(count1, count2) == 0) {
+        var rms = 0;
+      } else {
+        var rms = squares / Math.max(count1, count2);
+      }
 
-        var cases = [1, 2, 3, 4, 5, 6]
-        var expected = [1,0,0,1,0.5,0.42857142857]
-             
-        cases.forEach(function(v, i) {
-            console.log("now for "+ v);
-            elem = document.getElementById("c" + v);
-            svga = elem.querySelectorAll("svg")[0].outerHTML;
-            svgb = elem.querySelectorAll("svg")[1].outerHTML;
-            width1 = elem.querySelectorAll("svg")[0].getBBox().width;
-            height1 = elem.querySelectorAll("svg")[0].getBBox().height;
-            width2 = elem.querySelectorAll("svg")[1].getBBox().width;
-            height2 = elem.querySelectorAll("svg")[1].getBBox().height;
-            score = compare(svga, svgb, width1, height1, width2, height2, elem, i);
-           
-            elem.querySelectorAll("span")[0].innerHTML = "Expected Score: " + expected[i];
-            elem.querySelectorAll("span")[1].innerHTML = "Calculated Score: " + score;
-            elem.style.backgroundColor = score == expected[i] ? "green" : "red";
-        });
-    </script>
+      return rms.toFixed(11);
+    }
+
+    var cases = [1, 2, 3, 4, 5, 6]
+    var expected = [0, 1, 1, 0, 0.5, 0.42857142857]
+
+    cases.forEach(function(v, i) {
+      elem = document.getElementById("c" + v);
+      svga = elem.querySelectorAll("svg")[0].outerHTML;
+      svgb = elem.querySelectorAll("svg")[1].outerHTML;
+      width = 1000
+      height = 1000
+      score = compare(svga, svgb, width, height);
+
+      elem.querySelectorAll("span")[0].innerHTML = "Expected Score: " + expected[i];
+      elem.querySelectorAll("span")[1].innerHTML = "Calculated Score: " + score;
+      elem.style.backgroundColor = score == expected[i] ? "green" : "red";
+    });
+  </script>
 </body>
 
 </html>
